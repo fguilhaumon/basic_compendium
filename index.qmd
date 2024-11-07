@@ -309,7 +309,9 @@ utils::download.file(url      = source_url,
 
 - Ici nous déclarons le nom du fichier une seule fois et nous nous en servons pour créer l'url de la source des données `source_url` puis le chemin de destination du téléchargement `dest_path`.
 
-- Notez l'utilisation de `paste0()` pour l'url et de `file.path` pour le chemin. 
+- Notez l'utilisation de `paste0()` pour l'url et de `file.path` pour le chemin.
+
+- Notez les commentaires et les indentations pour faciliter la lecture du code.
 
 :::
 
@@ -356,7 +358,25 @@ dl_bird_sr <- function() {
 
 :::
 
-Nous allons modifier notre fonction pour avoir le choix entre plusieurs fichiers à télécharger (par exemple la richesse spécifique des oiseaux OU celle des mammifères). Nous pouvons ajouter un *paramètre* à notre fonction. Le paramètre devra être renseigné à l'utilisation et sa valeur sera observée par le code de la fonction pour choisir quel fichier télécharger :
+Nous allons éxecuter notre fonction. Il faut d'abord la rendre disponible à l'utilisation.
+
+{{< fa hand-point-right >}} pour cela il suffit de sélectioner sa définition et de la charger dans la console `ctrl + entrée`.
+
+{{< fa hand-point-right >}} Observez votre environnement, la fonction apparaît.
+
+pour éxecuter la fonction il suffit de l'appeler dans la console :
+
+```{r}
+#| echo: true
+#| eval: false
+
+dl_bird_sr()
+
+```
+
+Plutôt que de créer une deuxième fonction pour les mammifères nous allons modifier notre fonction pour avoir le choix entre plusieurs fichiers à télécharger (par exemple la richesse spécifique des oiseaux OU celle des mammifères).
+
+{{< fa bulb >}} Nous pouvons ajouter un *paramètre* à notre fonction. Le paramètre devra être renseigné à l'utilisation et sa valeur sera observée par le code de la fonction pour choisir quel fichier télécharger :
 
 
 ```{r}
@@ -364,6 +384,9 @@ Nous allons modifier notre fonction pour avoir le choix entre plusieurs fichiers
 #| eval: false
 
 download_sr <- function(taxon) {
+  
+  ## Inform about the data being dowloaded
+  message("# ---- Downloading data for taxon: ", taxon)
   
   ## File name ----
   if (taxon == "bird") filename <- "bird_SR_cells.csv"
@@ -398,14 +421,24 @@ download_sr <- function(taxon) {
 
 - On utilise `==` pour tester l'égalité de 2 valeurs (`!=`, `<`, `<=`, `>`, `>=` pour les autres comapraisons)
 
-- On devra obligatoirement renseigner une valeur pour `taxon` lors de l'utilisation de la fonction. Sinon elle ne saura pas quel fichier télécharger : `download_rs(taxon = "bird")` ou `download_rs(taxon = "mamm")`.
+- On devra obligatoirement renseigner une valeur pour `taxon` lors de l'utilisation de la fonction. Sinon elle ne saura pas quel fichier télécharger : `download_sr(taxon = "bird")` ou `download_sr(taxon = "mamm")`.
 
 - Si on ne renseigne pas de valeur pour `taxon` ou si on reseigne une valeur différente de `"bird"` ou `"mamm"`, alors la fonction échoue et renvoit un message d'erreur. C'est une bonne chose !
 
 :::
 
-Nous allons utliser notre fonction plus tard, patience ...
+Nous allons utiliser cette fonction plus tard, patience. En attendant nettoyons notre environnement car la bonne pratique est de charger les fonctions via un autre mécanisme que nous verrons plus tard.
 
+
+```{r}
+#| echo: true
+#| eval: false
+
+rm(dl_bird_sr)
+
+rm(download_sr)
+
+```
 
 ::: {.callout-tip}
 ## Bonne pratique
