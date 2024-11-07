@@ -1,0 +1,497 @@
+---
+title: "Research Compendium"
+subtitle: "Master 2 BEST-ALI 2024-2025"
+author: "François Guilhaumon"
+format:
+  html:
+    code-fold: false
+    page-layout: full
+editor: source
+embed-resources: true
+toc: true
+toc-depth: 4
+bibliography: references/references.bib
+---
+
+::: {.callout-note}
+## Objectif
+
+L'objectif de cet exercice est de créer un _**research compendium**_, c.-à-d. un 
+dossier de travail dont la structure est dérivée de celle d'un package {{< fa brands r-project >}}.
+Vous allez découvrir les fichiers importants que nous vous recommandons d'ajouter à 
+un projet de recherche. Vous allez aussi apprendre à écrire et documenter des fonctions {{< fa brands r-project >}}.
+
+Ce _**research compendium**_ pourra, par exemple, servir de base pour votre travail de stage de Master 2.
+:::
+
+
+**NB.** Cet exercice s'inspire du 
+[workshop](https://annakrystalli.me/rrtools-repro-research/intro.html) proposé par [Anna Krystalli](https://annakrystalli.me/) et est une version simplifiée de l'exercice proposé par la formation "Recherche reproductible en écologie numérique" du CESAB.
+
+## Préambule
+
+Afin de nous assister dans la création de la structure de notre dossier de travail,
+nous allons utiliser les packages {{< fa brands r-project >}} 
+`usethis` et `devtools`. Ils permettent de faciliter la création de certains fichiers/répertoires
+spécifiques à un compendium/package {{< fa brands r-project >}} et d'utiliser à notre avantage les outils de développement de packages {{< fa brands r-project >}}.
+
+{{< fa hand-point-right >}} Installez les packages {{< fa brands r-project >}} `usethis` et `devtools` depuis le CRAN :
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Installation de `usethis` et `devtools` ----
+install.packages("usethis")
+install.packages("devtools")
+
+## Chargement des packages -----
+library("usethis")
+library("devtools")
+```
+
+
+## Projet RStudio
+
+{{< fa hand-point-right >}}  Créez un nouveau projet RStudio : **_File > New Project > New Directory > New Project_**
+
+- Choisissez un nom pour votre projet (sans signe de ponctuation)
+- Sélectionnez l'emplacement où le nouveau projet sera créé
+- Décochez toutes les autres cases
+- Cochez la case "open in new session"
+- Validez
+
+
+::: {.callout-tip}
+## Bonne pratique
+
+Toujours travailler dans un **Projet RStudio**. Cela présente l'avantage de simplifier les chemins d'accès aux fichiers, notamment avec le package {{< fa brands r-project >}} [`here`](https://here.r-lib.org/) et sa fonction [`here()`](https://here.r-lib.org/reference/here.html). Les chemins d'accès seront toujours construits par rapport au dossier contenant le fichier **.Rproj** (racine du projet). On parle de _chemin relatif_. N'utilisez **plus jamais** la fonction [`setwd()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/getwd).
+:::
+
+
+
+## Fichier DESCRIPTION
+
+Le fichier **DESCRIPTION** décrit les métadonnées du projet (titre, auteur, description, dépendances requises, etc.). C'est un des éléments essentiels d'un package {{< fa brands r-project >}}. Ici, nous allons le _détourner_ pour l'utiliser dans le cadre d'un compendium afin de bénéficier des outils de développement de packages {{< fa brands r-project >}}. Ajoutons ce fichier avec la fonction `use_description()` de `usethis`.
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Ajout d'un fichier DESCRIPTION ----
+usethis::use_description(check_name = FALSE)
+```
+
+::: {.callout-note}
+Notez l'utilisation de `check_name = FALSE` pour pallier les problèmes liés aux restrictions imposées par le CRAN sur les caractères possibles dans les noms de package. 
+:::
+
+{{< fa hand-point-right >}} Remplissez les champs utiles du fichier **DESCRIPTION** (Title, Authors@R). Vous pourrez remplir le champ "Description" lorsque vous saurez ce que vous faites.
+
+
+::: {.callout-tip}
+## Bonne pratique
+
+Toujours ajouter un fichier **DESCRIPTION** à la racine du projet. En plus de la description du projet, il permet de lister les packages dont le projet dépend (tags **_Imports_**, **_Depends_** et **_Remotes_**). Avec ce fichier, plus besoin d'utiliser les fonctions [`install.packages()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages) et [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library). Elles seront remplacées respectivement par [`devtools::install_deps()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/install_deps) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
+:::
+
+
+
+## Choix d'une Licence
+
+Tout matériel partagé en ligne doit disposé d'une licence qui décrit ce qu'il est
+possible de faire avec. Ainsi, nous vous recommandons d'ajouter **dès le début du projet** une licence. Pour savoir quelle licence est la plus appropriée à votre projet, rendez-vous, par exemple, sur cette page : <https://chooser-beta.creativecommons.org/>.
+
+Ajoutons la licence [CC-by](https://usethis.r-lib.org/reference/licenses.html) à notre projet avec la fonction `usethis::use_ccby_license()`.
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Ajout d'une licence ----
+usethis::use_ccby_license()
+```
+
+Notez qu'un nouveau fichier a été créé : **LICENSE.md**. Celui-ci détaille le contenu de la license choisie et sera lu par GitHub. Regardez aussi le contenu du fichier **DESCRIPTION** : la section **_License_** a été mise à jour.
+
+
+::: {.callout-tip}
+## Bonne pratique
+
+Toujours ajouter une **LICENSE** à un projet qui sera rendu public. Visitez le site [**creativecommons.org**](https://chooser-beta.creativecommons.org/) pour choisir la plus appropriée à votre projet.
+
+{{< fa lightbulb >}}&nbsp; Si aucune licence n'est renseignée, votre projet est soumis aux règles de la
+[No License](https://choosealicense.com/no-permission/) : aucune permission n'est accordée. En
+d'autres termes, personne ne peut rien faire avec votre projet (pas d'utilisation, pas de modification, pas de partage, etc.).
+:::
+
+
+## Ajout des répertoires
+
+La prochaine étape consiste en la création de sous-répertoires, chacun ayant un rôle précis. Pour cela, utilisez la fonction `dir.create()`.
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Ajout de sous-répertoires ----
+reps <- c("data", "analyses", "R", "outputs")
+lapply(reps, dir.create)
+```
+
+::: {.callout-tip}
+## Bonne pratique
+
+Un bon _**Research compendium**_ sera composé de différents sous-répertoires, chacun destiné à accueillir un certain type de fichiers. Par ex. :
+
+- le dossier **data/** contiendra toutes les données brutes nécessaires au projet
+
+- le dossier **outputs/** contiendra tous les résultats générés par les analyses
+
+- le dossier **R/** ne contiendra que des fonctions {{< fa brands r-project >}} (et leurs documentations)
+
+- le dossier **analyses/** contiendra des scripts {{< fa brands r-project >}} (ou des fichiers `.qmd`) qui appeleront les fonctions {{< fa brands r-project >}}. Cette structure peut bien sûr être adaptée selon les besoins et la complexité du projet.
+
+:::
+
+
+## Implémentation des fonctions 
+
+Nous voilà fin prêt à coder !
+
+Nous utiliserons les données associées à l'étude de @williams_deep_2024 dont voici le résumé :
+
+> Biogeographic history can lead to variation in biodiversity across regions, but it remains unclear how the degree of biogeographic isolation among communities may lead to differences in biodiversity. Biogeographic analyses generally treat regions as discrete units, but species assemblages differ in how much biogeographic history they share, just as species differ in how much evolutionary history they share. Here, we use a continuous measure of biogeographic distance, phylobetadiversity, to analyze the influence of biogeographic isolation on the taxonomic and functional diversity of global mammal and bird assemblages. On average, biodiversity is better predicted by environment than by isolation, especially for birds. However, mammals in deeply isolated regions are strongly influenced by isolation; mammal assemblages in Australia and Madagascar, for example, are much less diverse than predicted by environment alone and contain unique combinations of functional traits compared to other regions. Neotropical bat assemblages are far more functionally diverse than Paleotropical assemblages, reflecting the different trajectories of bat communities that have developed in isolation over tens of millions of years. Our results elucidate how long-lasting biogeographic barriers can lead to divergent diversity patterns, against the backdrop of environmental determinism that predominantly structures diversity across most of the world.
+
+
+Les auteurs explorent les patrons globaux de dissimilarité phylogénétique entre assemblages de mammifères et d'oiseaux au regard de l'environnement et des barrères biogéographiques. Nos analyses seront simples, elles visent à apprendre à construire et utiliser un compendium : nous allons rapidement explorer et cartographier les patrons de richesse spécifique pour les oiseaux à l'échelle globale.
+
+
+{{< fa hand-point-right >}} Explorez rapidement les différentes sections de l'article et notez la présence des sections "Data availability" et "Code availability". Les auteurs expliquent comment obtenir les données de base qui soutiennent leurs analyses et fournissent un lien vers le *compendium* associé à leur article.
+
+{{< fa hand-point-right >}} Rendez-vous sur le [dépôt github](https://github.com/pwilliams0/Biogeography_and_global_diversity) associé à l'article, explorez le README et le contenu. Pensez-vous pouvoir reproduire (facilement) les analyses de @williams_deep_2024 à l'aide du compendium ?
+
+{{< fa hand-point-right >}} Localisez le fichier contenant les informations de richesse spécifique pour les oiseaux et notez son url (attention à ne pas récupérer l'url de la page github qui affiche le fichier de données formaté, mais bien l'url du fichier -> bouton "Raw" en haut à droite). Quel format ont les données ? Localisez aussi la couche "shapefile" qui correspond à la grille globale utilisée par les auteurs (attention le format "shp" est pénible, il y a plusieurs fichiers pour une seule couche vectorielle).
+
+
+**Objectif :** écrire 2 fonctions {{< fa brands r-project >}} qui vont permettre de télécharger les fichiers de données hébergés sur le dépôt GitHub mentionné ci-dessus. Les fichiers seront enregistrés dans le dossier **data/**.
+
+Utilisez la fonction [`usethis::use_r()`](https://usethis.r-lib.org/reference/use_r.html) pour créer le/les fichiers `.R` dans le dossier **R/**.
+
+```{r}
+#| echo: true
+#| eval: false
+
+usethis::use_r("fonctions")
+
+```
+
+{{< fa lightbulb >}} Utilisez les fonctions 
+[`dir.create()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/files2) et
+[`utils::download.file()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/download.file).
+
+
+**Proposition de fonction** (essayez de la comprendre)
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+dl_bird_rs <- function() {
+  
+  ## File name ----
+  filename <- "bird_SR_cells.csv"
+  
+  ## GitHub directory URL ----
+  url <- "https://raw.githubusercontent.com/pwilliams0/Biogeography_and_global_diversity/refs/heads/main/Data/"
+
+  ## Complete file url ----
+  file_url <- paste0(url, filename)
+  
+  ## Destination ---- 
+  dest_dir  <- "data"
+  dest_path <- file.path(dest_dir, filename)
+  
+  
+  ## Download file ----
+  utils::download.file(url      = file_url,
+                       destfile = dest_path,
+                       mode     = "wb")
+  
+  return(dest_path)
+  
+}
+```
+
+
+::: {.callout-tip}
+## Bonne pratique
+
+**Ecrivez des fonctions** : on parle de _Factorisation de code_. Cela rendra votre code plus clair et plus facilement réutilisable. Placez toujours vos fonctions {{< fa brands r-project >}} dans le dossier **R/**. Si vous utilisez des fonctions de dépendances externes, priviligiez cette écriture : `package::fonction()`.
+:::
+
+{{< fa hand-point-right >}} Écrivez une fonction `dl_grid_cells` qui télécharge les fichiers "shapefile" de la grille globale.
+
+## Documentation 
+
+Maintenant, documentez votre/vos fonctions. C'est **essentiel !** Pour cela,
+ajoutez un entête [**roxygen2**](https://roxygen2.r-lib.org/articles/roxygen2.html) à vos fonctions. Cette syntaxe permet de documenter efficacement toute fonction {{< fa brands r-project >}}.
+
+Cette entête devra contenir (a minima) un titre, une description de chaque argument et le retour de la fonction.
+
+{{< fa lightbulb >}} Pour ajouter une entête **roxygen2** à une fonction existente utlisez le menu **_Code > Insert Roxygen Skeleton_**.
+
+**Proposition de documentation** (explorez)
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+#' Download Bird Species Richness Data from Williams et al. 2024
+#'
+#' @return the path to the downloaded file
+#' @export
+#'
+dl_bird_rs <- function() { ... }
+```
+
+
+**Optionnel :** transpilez vos entêtes **roxygen2** en fichiers `.Rd`, seuls fichiers acceptés par {{< fa brands r-project >}} pour documenter des fonctions. Ces fichiers `.Rd` seront stockés dans le dossier **man/**.
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Génération de la doc ----
+devtools::document()
+```
+
+L'aide de votre fonction est maintenant accessible via `?nom_fonction`.
+
+
+::: {.callout-tip}
+## Bonne pratique
+
+Pensez aux autres (et au vous du futur) : **documentez toujours** votre code. Un code sans documentation est inutile. Utilisez les entêtes **roxygen2** pour documenter vos fonctions {{< fa brands r-project >}}, de simples commentaires pour documenter du code et des `README` pour tout le reste.
+:::
+
+
+## Ajout des dépendances 
+
+Nos fonctions contiennent une dépendance à un package externe : [`utils`](https://www.rdocumentation.org/packages/utils/versions/3.6.2). Nous devons ajouter cette dépendance au fichier **DESCRIPTION**. Pour cela, nous allons utiliser la fonction `usethis::use_package()`.
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Ajout de dépendances ----
+usethis::use_package("utils")
+```
+
+Regardez le contenu du fichier **DESCRIPTION**. Par défaut, les packages requis sont listés sous le tag **_Imports_**. Ainsi, pour utiliser une fonction externe, il faudra l'appeler par `package::fonction()`. Si vous remplacer le tag **_Imports_** par **_Depends_** (`?usethis::use_package()`), l'utilisation de la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (voir plus bas) aura le même effet qu'un [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et vous pourrez utiliser une fonction externe par `fonction()`. C'est pratique pour les packages comme `ggplot2` qui demande de nombreux appels à leurs fonctions pour réliser une tâche.
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Ajout de dépendances ----
+usethis::use_package("ggplot2", type = "Depends")
+```
+
+::: {.callout-tip}
+## Bonne pratique
+
+Listez toujours les **packages requis dans le fichier DESCRIPTION**. Ainsi, vous centralisez la liste des packages requis en un seul endroit et vous pourrez utiliser les fonctions [`remotes::install_deps()`](https://remotes.r-lib.org/reference/install_deps.html) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
+:::
+
+## Chargement du projet 
+
+Maintenant que notre compendium contient les éléments clés d'un package {{< fa brands r-project >}}, c.-à-d. un fichier **DESCRIPTION** et un répertoire **R/**, nous pouvons utiliser les outils de développement des packages {{< fa brands r-project >}} pour réaliser deux tâches.
+
+1. Les packages requis peuvent être installés (ou mis à jour) à l'aide de la
+fonction [`remotes::install_deps()`](https://remotes.r-lib.org/reference/install_deps.html). Cette fonction vient remplacer la fonction [`install.packages()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages). Elle va lire le fichier **DESCRIPTION** pour récupérer la liste des packages requis. Il est donc important de tenir ce fichier à jour.
+
+2. Les fonctions {{< fa brands r-project >}} stockées dans le dossier **R/** peuvent être chargées avec la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all). Cette fonction vient remplacer la fonction [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source) (et [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) si les packages requis sont listés sous le tag **_Depends_** dans le fichier **DESCRIPTION**). Ce qui est pratique dans le cas où on doit charger de nombreuses fonctions {{< fa brands r-project >}}. Après chaque modification d'une fonction {{< fa brands r-project >}}, n'oubliez pas d'exécuter la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
+
+
+Essayez ces deux fonctions.
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Installation des packages manquants ----
+remotes::install_deps()
+
+## Chargement des packages et fonctions R ----
+devtools::load_all()
+```
+
+::: {.callout-tip}
+## Bonne pratique
+
+Avec un fichier **DESCRIPTION** (listant les dépendances requises) et un dossier **R/**, vous pouvez utiliser les fonctions [`remotes::install_deps()`](https://remotes.r-lib.org/reference/install_deps.html) (installation/mise à jour des packages) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (chargement du projet) au lieu de [`install.packages()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages), [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source).
+:::
+
+
+## Appel aux fonctions 
+
+Jusqu'à présent, nous n'avons fait que définir des fonctions {{< fa brands r-project >}}, mais nous ne les avons pas exécutées. Nous allons créer notre premier script {{< fa brands r-project >}} dans le dossier **analyses/**. Celui-ci aura pour objectif d'appeler les fonctions {{< fa brands r-project >}} définies précédemment pour télécharger les données.
+
+Créez un nouveau script {{< fa brands r-project >}} comme suit et éditez-le: 
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Ajout d'un script R ----
+utils::file.edit("analyses/download-data.R")
+```
+
+
+**Proposition de contenu**
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Download project raw data
+#
+# This script will download bird species richness data and the global grid
+# from Williams et al. 2024. The files will be stored in `data/`.
+# 
+# All functions used in the script have been developed for this project
+# and can be found in the folder R/.
+#
+# Jane Doe <jane.doe@mail.me>
+
+## Download bird sr data ----
+
+dl_bird_rs()
+
+## Download the global grid ----
+
+dl_grid_cells()
+
+```
+
+
+**N.B.** Nous verrons plus tard comment transformer ce script {{< fa brands r-project >}} en un fichier **Quarto** (`.qmd`).
+
+
+## Ajout d'un make.R 
+
+Afin d'automatiser notre projet, nous allons créer un script {{< fa brands r-project >}} à la racine du projet. Nous l'appelerons, par convention, **make.R**. Celui-ci aura deux objectifs : 1) mettre en place le projet et 2) exécuter le projet. L'idée est de n'exécuter que ce script. Utilisez la fonction `file.`.
+
+{{< fa hand-point-right >}} Créez un fichier `make.R` à la racine du projet, placez-y une entête informative (le nom du compendium, le nom du fichier, votre email). Placez-y aussi les appels à `devtools::install_deps()` pour installer les dépendences et `devtools::load_all()` pour charger les fonctions que vous avez écrites.
+
+Exemple d'entête :
+
+```{r}
+#| echo: true
+#| eval: false
+
+############################################################
+# Basic Compendium
+# francois.guilhaumon@ird.fr
+# make.R
+############################################################
+
+# install the project dependencies listed in DESCRIPTION ----
+devtools::install_deps()
+
+# load the project functions ----
+devtools::load_all()
+
+```
+
+
+::: {.callout-tip}
+## Bonne pratique
+
+Bien que non essentiel, un **fichier make.R** placé à la racine du projet permet de facilement mettre en place le projet (installation et chargement des packages requis et des fonctions {{< fa brands r-project >}}) et d'exécuter les différentes analyses de manière séquentielle (en sourçant les scripts {{< fa brands r-project >}} qui appellent eux-même les fonctions {{< fa brands r-project >}}). C'est la **porte d'entrée des analyses**.
+
+:::
+
+
+{{< fa hand-point-right >}} Finalement, ajoutez une ligne dans le fichier **make.R** qui permettra d'exécuter ce script {{< fa brands r-project >}}.
+Utilisez la fonction [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source) pour cela.
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+############################################################
+# Basic Compendium
+# francois.guilhaumon@ird.fr
+# make.R
+############################################################
+
+# install the project dependencies listed in DESCRIPTION ----
+devtools::install_deps()
+
+# load the project functions ----
+devtools::load_all()
+
+# download the project data ----
+source("analyses/download-data.R")
+
+```
+
+Pour charger le projet et lancer les analyses, il suffit d'exécuter ce fichier **make.R**.
+
+
+::: {.callout-tip}
+## Bonne pratique
+
+Le dossier **analyses/** contient les scripts {{< fa brands r-project >}} qui appellent les fonctions {{< fa brands r-project >}} stockées dans le dossier **R/**. Il peut être ignoré dans le cas de simples analyses. Le code de l'analyse devra alors se trouver dans le **make.R**. A contrario, dans le cas d'analyses complexes, n'hésitez pas à multiplier les scripts {{< fa brands r-project >}} (plutôt que d'avoir un seul gros script).
+:::
+
+## Ajout d'un README 
+
+Un jour, sûrement, vous verrez comment envoyer ce projet sur GitHub. Pour l'instant, nous allons légèrement anticiper et ajouter un `README` à notre compendium. Ce sera la **vitrine du projet**. Les rôles d'un `README` sont : 1) de présenter le projet, 2) d'expliquer son contenu, et 3) d'expliquer comment l'installer et l'utiliser.
+
+Pour cela, vous allez ajouter un `README.md` (fichier **Markdown**) à la racine de votre projet.
+
+```{r}
+#| echo: true
+#| eval: false
+
+## Ajout d'un README ----
+utils::file.edit("README.md")
+```
+
+
+```
+
+# Basic Compendium
+
+This commpendium guides you (in French) in the creation of a basic research compendium. It takes as example the data associated with the stuty of Williams et al. (2024) :
+  
+>  Williams, P.J., Zipkin, E.F. & Brodie, J.F. Deep biogeographic barriers explain divergent global vertebrate communities. Nat Commun 15, 2457 (2024). https://doi.org/10.1038/s41467-024-46757-z
+
+## Usage
+
+The exercice is available [here](fguilhaumon.github.io/basic_compendium).
+
+
+```
+
+
+{{< fa warning >}}&nbsp; N'oubliez pas aussi d'éditer les sections **_Title_** et **_Description_** du fichier **DESCRIPTION**.
+
+
+::: {.callout-tip}
+## Bonne pratique #11
+
+Ajoutez un **README** à votre projet afin d'aider l'utilisateur à comprendre votre projet. 
+:::
+
+
+> **Félicitation ! Votre research compendium est maintenant fonctionnel.**
+
