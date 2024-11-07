@@ -385,7 +385,7 @@ Plutôt que de créer une deuxième fonction pour les mammifères nous allons mo
 
 download_sr <- function(taxon) {
   
-  ## Inform about the data being dowloaded
+  ## Inform about the data being downloaded
   message("# ---- Downloading data for taxon: ", taxon)
   
   ## File name ----
@@ -401,7 +401,6 @@ download_sr <- function(taxon) {
   ## Destination ---- 
   dest_dir  <- "data"
   dest_path <- file.path(dest_dir, filename)
-  
   
   ## Download file ----
   utils::download.file(url      = file_url,
