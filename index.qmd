@@ -135,9 +135,8 @@ RoxygenNote: 7.3.1
 ::: {.callout-tip}
 ## Bonne pratique
 
-Toujours ajouter un fichier **DESCRIPTION** à la racine du projet. En plus de la description du projet, il permet de lister les packages dont le projet dépend (tags **_Imports_**, **_Depends_** et **_Remotes_**). Avec ce fichier, plus besoin d'utiliser les fonctions [`install.packages()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages) et [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library). Elles seront remplacées respectivement par [`devtools::install_deps()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/install_deps) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
+Toujours ajouter un fichier **DESCRIPTION** à la racine du projet. Il permet de décrire le projet et ses auteurs. On le vera ensuite, il est indispensable pour lister les dépendances et les installer facilement.
 :::
-
 
 
 ## Choix d'une Licence
@@ -200,7 +199,7 @@ lapply(reps, dir.create)
 ::: {.callout-tip}
 ## Bonne pratique
 
-Un bon _**Research compendium**_ sera composé de différents sous-répertoires, chacun destiné à accueillir un certain type de fichiers. Par ex. :
+Un [_**bon Research compendium**_](https://www.youtube.com/watch?v=QuGcoOJKXT8) sera composé de différents sous-répertoires, chacun destiné à accueillir un certain type de fichiers. Par ex. :
 
 - le dossier **data/** contiendra toutes les données brutes nécessaires au projet
 
@@ -475,7 +474,9 @@ Nos fonctions contiennent une dépendance à un package externe : [`utils`](http
 usethis::use_package("utils")
 ```
 
-Regardez le contenu du fichier **DESCRIPTION**. Par défaut, les packages requis sont listés sous le tag **_Imports_**. Ainsi, pour utiliser une fonction externe, il faudra l'appeler par `package::fonction()`. Si vous remplacer le tag **_Imports_** par **_Depends_** (`?usethis::use_package()`), l'utilisation de la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (voir plus bas) aura le même effet qu'un [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et vous pourrez utiliser une fonction externe par `fonction()`. C'est pratique pour les packages comme `ggplot2` qui demande de nombreux appels à leurs fonctions pour réaliser une tâche.
+Regardez le contenu du fichier **DESCRIPTION**. Par défaut, les packages requis sont listés sous le tag **_Imports_**. Ainsi, pour utiliser une fonction externe, il faudra l'appeler par `package::fonction()`.
+
+Si vous remplacer le tag **_Imports_** par **_Depends_** (`?usethis::use_package()`), l'utilisation de la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (voir plus bas) aura le même effet qu'un [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et vous pourrez utiliser une fonction externe par `fonction()`. C'est pratique pour les packages comme `ggplot2` qui demande de nombreux appels à leurs fonctions pour réaliser une tâche.
 
 ```{r}
 #| echo: true
@@ -488,18 +489,31 @@ usethis::use_package("ggplot2", type = "Depends")
 ::: {.callout-tip}
 ## Bonne pratique
 
-Listez toujours les **packages requis dans le fichier DESCRIPTION**. Ainsi, vous centralisez la liste des packages requis en un seul endroit et vous pourrez utiliser les fonctions [`remotes::install_deps()`](https://remotes.r-lib.org/reference/install_deps.html) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
+Listez toujours les **packages requis dans le fichier DESCRIPTION**. Ainsi, vous centralisez la liste des packages requis en un seul endroit.
+
+En plus de la description du projet, il permet de lister les packages dont le projet dépend (tags **_Imports_**, **_Depends_** et **_Remotes_**). Avec ce fichier, plus besoin d'utiliser les fonctions [`install.packages()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages) et [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library). 
+
+Elles seront remplacées respectivement par [`devtools::install_deps()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/install_deps) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
+
+J'ai besoin d'un nouveau package pour mes analyses, j'utilise **toujours** la procédure suivante :
+
+- je renseigne le package dans DESCRIPTION
+
+- j'execute `devtools::install_deps()` pour l'installer
+
+- j'execute `devtools::load_all()` si j'utilise le champ "Depends" pour pouvoir utliser les fonctions du package (c'est mal), sinon j'utilise (toujours) `package::fonction`.
 
 :::
 
 ## Chargement du projet 
 
-Maintenant que notre compendium contient les éléments clés d'un package {{< fa brands r-project >}}, c.-à-d. un fichier **DESCRIPTION** et un répertoire **R/**, nous pouvons utiliser les outils de développement des packages {{< fa brands r-project >}} pour réaliser deux tâches.
+Maintenant que notre compendium contient les éléments clés d'un package {{< fa brands r-project >}}, c.-à-d. un fichier **DESCRIPTION** et un répertoire **R/**, nous pouvons utiliser les outils de développement des packages {{< fa brands r-project >}}.
 
-1. Les packages requis peuvent être installés (ou mis à jour) à l'aide de la
-fonction [`devtools::install_deps()`](https://remotes.r-lib.org/reference/install_deps.html). Cette fonction vient remplacer la fonction [`install.packages()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages). Elle va lire le fichier **DESCRIPTION** pour récupérer la liste des packages requis. Il est donc important de tenir ce fichier à jour.
+Les fonctions {{< fa brands r-project >}} stockées dans le dossier **R/** doivent être chargées avec la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
 
-2. Les fonctions {{< fa brands r-project >}} stockées dans le dossier **R/** peuvent être chargées avec la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all). Cette fonction vient remplacer la fonction [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source) (et [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) si les packages requis sont listés sous le tag **_Depends_** dans le fichier **DESCRIPTION**). Ce qui est pratique dans le cas où on doit charger de nombreuses fonctions {{< fa brands r-project >}}. Après chaque modification d'une fonction {{< fa brands r-project >}}, n'oubliez pas d'exécuter la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
+Cette fonction vient remplacer la fonction [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source) (et la fonction [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) si les packages requis sont listés sous le tag **_Depends_** dans le fichier **DESCRIPTION**).
+
+Après chaque modification d'une fonction {{< fa brands r-project >}}, n'oubliez pas d'exécuter la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
 
 
 Essayez ces deux fonctions.
@@ -518,15 +532,7 @@ devtools::load_all()
 ::: {.callout-tip}
 ## Bonne pratique
 
-Avec un fichier **DESCRIPTION** (listant les dépendances requises) et un dossier **R/**, vous pouvez utiliser les fonctions [`remotes::install_deps()`](https://remotes.r-lib.org/reference/install_deps.html) (installation/mise à jour des packages) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (chargement du projet) au lieu de [`install.packages()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages), [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source).
-
-J'ai besoin d'un nouveau package pour mes analyses, j'utilise **toujours** la procédure suivante :
-
-- je renseigne le package dans DESCRIPTION
-
-- j'execute `devtools::install_deps()` pour l'installer
-
-- j'execute `devtools::load_all()` si j'utilise le champ "Depends" pour pouvoir utliser les fonctions du package (c'est mal), sinon j'utilise (toujours) `package::fonction`.
+Avec un dossier **R/**, vous pouvez utiliser la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (chargement du projet) au lieu de [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source).
 
 :::
 
