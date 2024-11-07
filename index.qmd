@@ -1,7 +1,7 @@
 ---
 title: "Research Compendium"
 subtitle: "Master 2 BEST-ALI 2024-2025"
-author: "François Guilhaumon"
+title-block-banner: images/workflow.png
 format:
   html:
     theme: spacelab
@@ -10,18 +10,17 @@ format:
 editor: source
 embed-resources: true
 toc: true
+toc-title: Au menu aujourd'hui
 toc-depth: 4
 bibliography: references/references.bib
 ---
 
 ![](images/workflow.png)
-["Artwork by Allison_horst"](https://https://allisonhorst.com/).
-
 
 ::: {.callout-note}
 ## Objectif
 
-L'objectif de cet exercice est de créer un _**research compendium**_, c.-à-d. un 
+L'objectif de cette session de travaux pratiques est de créer un _**research compendium**_, c.-à-d. un 
 dossier de travail dont la structure est dérivée de celle d'un package {{< fa brands r-project >}}.
 Vous allez découvrir les fichiers importants que nous vous recommandons d'ajouter à 
 un projet de recherche. Vous allez aussi apprendre à écrire et documenter des fonctions {{< fa brands r-project >}}.
@@ -30,8 +29,7 @@ Ce _**research compendium**_ pourra, par exemple, servir de base pour votre trav
 :::
 
 
-**NB.** Cet exercice s'inspire du 
-[workshop](https://annakrystalli.me/rrtools-repro-research/intro.html) proposé par [Anna Krystalli](https://annakrystalli.me/) et est une version simplifiée de l'exercice proposé par la formation ["Recherche reproductible en écologie numérique"](https://rdatatoolbox.github.io/) du CESAB.
+**NB.** Ce tutoriel est une version simplifiée de l'exercice proposé par la formation ["Recherche reproductible en écologie numérique"](https://rdatatoolbox.github.io/) du CESAB.
 
 ## Préambule
 
@@ -62,6 +60,8 @@ Comme ces packages ne sont PAS nécessaires à l'execution de nos analyses (ils 
 
 :::
 
+
+
 ## Projet RStudio
 
 {{< fa hand-point-right >}}  Créez un nouveau projet RStudio : **_File > New Project > New Directory > New Project_**
@@ -85,7 +85,10 @@ Comme ces packages ne sont PAS nécessaires à l'execution de nos analyses (ils 
 ::: {.callout-tip}
 ## Bonne pratique
 
-Toujours travailler dans un **Projet RStudio**. Cela présente l'avantage de simplifier les chemins d'accès aux fichiers, notamment avec le package {{< fa brands r-project >}} [`here`](https://here.r-lib.org/) et sa fonction [`here()`](https://here.r-lib.org/reference/here.html). Les chemins d'accès seront toujours construits par rapport au dossier contenant le fichier **.Rproj** (racine du projet). On parle de _chemin relatif_. N'utilisez **plus jamais** la fonction [`setwd()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/getwd).
+Toujours travailler dans un **Projet RStudio**. Cela présente l'avantage de simplifier les chemins d'accès aux fichiers, notamment avec le package {{< fa brands r-project >}} [`here`](https://here.r-lib.org/) et sa fonction [`here()`](https://here.r-lib.org/reference/here.html) dans les documents quarto. Les chemins d'accès seront toujours construits par rapport au dossier contenant le fichier **.Rproj** (racine du projet). On parle de _chemin relatif_. N'utilisez **plus jamais** la fonction [`setwd()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/getwd).
+
+![](images/setwd_VS_rproj.png){width="50%" fig-align="center"}
+
 :::
 
 
@@ -134,8 +137,8 @@ Toujours ajouter un fichier **DESCRIPTION** à la racine du projet. En plus de l
 
 ## Choix d'une Licence
 
-Tout matériel partagé en ligne doit disposé d'une licence qui décrit ce qu'il est
-possible de faire avec. Ainsi, nous vous recommandons d'ajouter **dès le début du projet** une licence. Pour savoir quelle licence est la plus appropriée à votre projet, rendez-vous, par exemple, sur cette page : <https://chooser-beta.creativecommons.org/>.
+Tout matériel partagé doit disposé d'une licence qui décrit ce qu'il est
+possible de faire avec. Ainsi, nous vous recommandons d'ajouter **dès le début du projet** une licence. Pour trouver une licence appropriée à votre projet, rendez-vous, par exemple, sur cette page : <https://chooser-beta.creativecommons.org/>.
 
 Ajoutons la licence [CC-by](https://usethis.r-lib.org/reference/licenses.html) à notre projet avec la fonction `usethis::use_ccby_license()`.
 
@@ -173,6 +176,13 @@ La prochaine étape consiste en la création de sous-répertoires, chacun ayant 
 ## Ajout de sous-répertoires ----
 reps <- c("data", "analyses", "R", "outputs")
 lapply(reps, dir.create)
+
+## Plus optimal que ----
+# dir.create("data")
+# dir.create("analyses")
+# dir.create("R")
+# dir.create("outputs")
+
 ```
 
 ::: {.callout-tip}
@@ -191,51 +201,110 @@ Un bon _**Research compendium**_ sera composé de différents sous-répertoires,
 :::
 
 
-## Implémentation des fonctions 
+## Données du compendium
 
-Nous voilà fin prêt à coder !
+Nous voilà fin prêt à travailler !
 
 Nous utiliserons les données associées à l'étude de @williams_deep_2024 dont voici le résumé :
 
 > Biogeographic history can lead to variation in biodiversity across regions, but it remains unclear how the degree of biogeographic isolation among communities may lead to differences in biodiversity. Biogeographic analyses generally treat regions as discrete units, but species assemblages differ in how much biogeographic history they share, just as species differ in how much evolutionary history they share. Here, we use a continuous measure of biogeographic distance, phylobetadiversity, to analyze the influence of biogeographic isolation on the taxonomic and functional diversity of global mammal and bird assemblages. On average, biodiversity is better predicted by environment than by isolation, especially for birds. However, mammals in deeply isolated regions are strongly influenced by isolation; mammal assemblages in Australia and Madagascar, for example, are much less diverse than predicted by environment alone and contain unique combinations of functional traits compared to other regions. Neotropical bat assemblages are far more functionally diverse than Paleotropical assemblages, reflecting the different trajectories of bat communities that have developed in isolation over tens of millions of years. Our results elucidate how long-lasting biogeographic barriers can lead to divergent diversity patterns, against the backdrop of environmental determinism that predominantly structures diversity across most of the world.
 
 
-Les auteurs explorent les patrons globaux de dissimilarité phylogénétique des mammifères et des oiseaux au regard de l'environnement et des barrières biogéographiques. Ici nos analyses seront simples, elles visent à apprendre à construire et utiliser un compendium : nous allons rapidement explorer et cartographier les patrons de richesse spécifique pour les oiseaux à l'échelle globale en nous appuyant sur des données générées par @williams_deep_2024.
+Les auteurs explorent les patrons globaux de dissimilarité phylogénétique des mammifères et des oiseaux au regard de l'environnement et des barrières biogéographiques. Ici nos analyses seront simples, elles visent à apprendre à construire et utiliser un compendium : nous allons rapidement explorer et cartographier les patrons de richesse spécifique pour les oiseaux et les mammifères à l'échelle globale en nous appuyant sur des données générées par @williams_deep_2024.
 
 
 {{< fa hand-point-right >}} Explorez rapidement les différentes sections de l'article et notez la présence des sections "Data availability" et "Code availability". Les auteurs expliquent comment obtenir les données de base qui soutiennent leurs analyses et fournissent un lien vers le *compendium* associé à leur article.
 
-{{< fa hand-point-right >}} Rendez-vous sur le [dépôt github](https://github.com/pwilliams0/Biogeography_and_global_diversity) associé à l'article, explorez le README et le contenu. Pensez-vous pouvoir reproduire (facilement) les analyses de @williams_deep_2024 à l'aide du compendium ?
+::: {.callout-note}
 
-{{< fa hand-point-right >}} Localisez le fichier contenant les informations de richesse spécifique pour les oiseaux et notez son url (attention à ne pas récupérer l'url de la page github qui affiche le fichier de données formaté, mais bien l'url du fichier -> bouton "Raw" en haut à droite). Quel format ont les données ? Localisez aussi la couche "shapefile" qui correspond à la grille globale utilisée par les auteurs (attention le format "shp" est pénible, il y a plusieurs fichiers pour une seule couche vectorielle).
-
-
-**Objectif :** écrire 2 fonctions {{< fa brands r-project >}} qui vont permettre de télécharger les fichiers de données hébergés sur le dépôt GitHub mentionné ci-dessus. Les fichiers seront enregistrés dans le dossier **data/**.
-
-Utilisez la fonction [`usethis::use_r()`](https://usethis.r-lib.org/reference/use_r.html) pour créer un fichier `fonctions.R` dans le dossier **R/**.
+Vous pouvez télécharger l'article (en open access) dans un sous répertoire `references` pour y avoir accès facilement.
 
 ```{r}
 #| echo: true
 #| eval: false
 
-## Creation d'un fichier .R dans R/ --
-usethis::use_r("fonctions")
+## Ajout de sous-répertoires ----
+reps <- c("data", "analyses", "R", "outputs", "references")
+lapply(reps, dir.create, showWarnings = FALSE)
 
 ```
 
-{{< fa lightbulb >}} Utilisez les fonctions 
-[`dir.create()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/files2) et
-[`utils::download.file()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/download.file).
+:::
 
 
-**Proposition de fonction** (essayez de la comprendre)
+{{< fa hand-point-right >}} Rendez-vous sur le [dépôt github](https://github.com/pwilliams0/Biogeography_and_global_diversity) associé à l'article, explorez le README et le contenu. Pensez-vous pouvoir reproduire (facilement) les analyses de @williams_deep_2024 à l'aide du compendium ?
 
+{{< fa hand-point-right >}} Localisez les fichiers contenant les informations de richesse spécifique pour les oiseaux et les mammifères, notez leurs urls (attention à ne pas récupérer l'url de la page github qui affiche le fichier de données formaté, mais bien l'url du fichier -> bouton "Raw" en haut à droite).
+
+{{< fa hand-point-right >}} Localisez aussi la couche "shapefile" qui correspond à la grille globale utilisée par les auteurs (attention le format "shp" est pénible, il y a plusieurs fichiers pour une seule couche vectorielle).
+
+## Implémentation des fonctions
+
+::: {.callout-note}
+## Objectif
+
+Dans cette partie nous allons écrire 2 fonctions {{< fa brands r-project >}} qui vont permettre de télécharger les fichiers de données hébergés sur le dépôt GitHub mentionné ci-dessus. Les fichiers seront enregistrés dans le dossier **data/**.
+:::
+
+### Création d'un fichier dans R/
+
+Nous allons d'abord créer un fichier {{< fa brands r-project >}} dans lequel nous écrirons le code source de nos fonctions.
+
+{{< fa hand-point-right >}} Utilisez la fonction [`usethis::use_r()`](https://usethis.r-lib.org/reference/use_r.html) pour créer un fichier `functions.R` dans le dossier **R/**.
 
 ```{r}
 #| echo: true
 #| eval: false
 
-dl_bird_rs <- function() {
+## Creation d'un fichier functions.R dans R/ --
+usethis::use_r("functions")
+
+```
+
+
+### Écriture des fonctions
+
+Nous allons tout d'abord utiliser la fonction [`utils::download.file()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/download.file) pour développer un code qui télécharge les données de richesse spécifique pour les oiseaux :
+
+```{r}
+#| echo: true
+#| eval: false
+
+## File name ----
+filename <- "bird_SR_cells.csv"
+
+## GitHub directory URL ----
+url <- "https://raw.githubusercontent.com/pwilliams0/Biogeography_and_global_diversity/refs/heads/main/Data/"
+
+## Complete data source url ----
+source_url <- paste0(url, filename)
+
+## Destination ---- 
+dest_dir  <- "data"
+dest_path <- file.path(dest_dir, filename)
+
+## Download file ----
+utils::download.file(url      = source_url,
+                     destfile = dest_path,
+                     mode     = "wb")
+
+```
+
+::: {.callout-note}
+
+- Ici nous déclarons le nom du fichier une seule fois et nous nous en servons pour créer l'url de la source des données `source_url` puis le chemin de destination du téléchargement `dest_path`.
+
+- Notez l'utilisation de `paste0()` pour l'url et de `file.path` pour le chemin. 
+
+:::
+
+Pour "transformer" ce code en fonction nous allons l'encapsuler dans une déclaration de fonction {{< fa brands r-project >}}, ici nous choisissons d'appeler la fonction `dl_bird_sr` (pour "download bird species richness") :
+
+```{r}
+#| echo: true
+#| eval: false
+
+dl_bird_sr <- function() {
   
   ## File name ----
   filename <- "bird_SR_cells.csv"
@@ -262,6 +331,67 @@ dl_bird_rs <- function() {
 ```
 
 
+::: {.callout-note}
+
+- Une fonction est un objet {{< fa brands r-project >}} comme les autres : on doit choisir son nom et on utilise le symbole d'attribution `<-` pour la déclarer.
+
+- On utilise `return()` en fin de fonction pour retourner à l'utilisateur le résultat de la fonction. Ici on renvoit simplement le chemin de destination du téléchargement.
+
+- Cette fonction n'a pas de *paramètres* (les parenthèses après `function` sont vides : `<- function()`) : aucune information n'est nécessaire à son fonctionnement, la fonction télécharge les données pour les oiseaux, c'est tout.
+
+:::
+
+Nous allons modifier notre fonction pour avoir le choix entre plusieurs fichiers à télécharger (par exemple la richesse spécifique des oiseaux OU celle des mammifères). Nous pouvons ajouter un *paramètre* à notre fonction. Le paramètre devra être renseigné à l'utilisation et sa valeur sera observée par le code de la fonction pour choisir quel fichier télécharger :
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+download_sr <- function(taxon) {
+  
+  ## File name ----
+  if (taxon == "bird") filename <- "bird_SR_cells.csv"
+  if (taxon == "mamm") filename <- "mamm_SR_cells.csv"
+  
+  ## GitHub directory URL ----
+  url <- "https://raw.githubusercontent.com/pwilliams0/Biogeography_and_global_diversity/refs/heads/main/Data/"
+
+  ## Complete file url ----
+  file_url <- paste0(url, filename)
+  
+  ## Destination ---- 
+  dest_dir  <- "data"
+  dest_path <- file.path(dest_dir, filename)
+  
+  
+  ## Download file ----
+  utils::download.file(url      = file_url,
+                       destfile = dest_path,
+                       mode     = "wb")
+  
+  return(dest_path)
+  
+}
+```
+
+::: {.callout-note}
+
+- Le nom de la fonction à changé ...
+
+- On utilise `if ()` pour observer la valeur de `taxon` renseignée par l'utilisateur.
+
+- On utilise `==` pour tester l'égalité de 2 valeurs (`!=`, `<`, `<=`, `>`, `>=` pour les autres comapraisons)
+
+- On devra obligatoirement renseigner une valeur pour `taxon` lors de l'utilisation de la fonction. Sinon elle ne saura pas quel fichier télécharger : `download_rs(taxon = "bird")` ou `download_rs(taxon = "mamm")`.
+
+- Si on ne renseigne pas de valeur pour `taxon` ou si on reseigne une valeur différente de `"bird"` ou `"mamm"`, alors la fonction échoue et renvoit un message d'erreur. C'est une bonne chose !
+
+:::
+
+Nous allons utliser notre fonction plus tard, patience ...
+
+
 ::: {.callout-tip}
 ## Bonne pratique
 
@@ -286,12 +416,14 @@ Cette entête devra contenir (a minima) un titre, une description de chaque argu
 #| echo: true
 #| eval: false
 
-#' Download Bird Species Richness Data from Williams et al. 2024
+#' Download Species Richness Data from Williams et al. 2024
 #'
+#' @param taxon (bird, mamm) the taxon for which data are downloaded
+#' 
 #' @return the path to the downloaded file
 #' @export
 #'
-dl_bird_rs <- function() { ... }
+download_sr <- function(taxon) { ... }
 ```
 
 
@@ -327,7 +459,7 @@ Nos fonctions contiennent une dépendance à un package externe : [`utils`](http
 usethis::use_package("utils")
 ```
 
-Regardez le contenu du fichier **DESCRIPTION**. Par défaut, les packages requis sont listés sous le tag **_Imports_**. Ainsi, pour utiliser une fonction externe, il faudra l'appeler par `package::fonction()`. Si vous remplacer le tag **_Imports_** par **_Depends_** (`?usethis::use_package()`), l'utilisation de la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (voir plus bas) aura le même effet qu'un [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et vous pourrez utiliser une fonction externe par `fonction()`. C'est pratique pour les packages comme `ggplot2` qui demande de nombreux appels à leurs fonctions pour réliser une tâche.
+Regardez le contenu du fichier **DESCRIPTION**. Par défaut, les packages requis sont listés sous le tag **_Imports_**. Ainsi, pour utiliser une fonction externe, il faudra l'appeler par `package::fonction()`. Si vous remplacer le tag **_Imports_** par **_Depends_** (`?usethis::use_package()`), l'utilisation de la fonction [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (voir plus bas) aura le même effet qu'un [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et vous pourrez utiliser une fonction externe par `fonction()`. C'est pratique pour les packages comme `ggplot2` qui demande de nombreux appels à leurs fonctions pour réaliser une tâche.
 
 ```{r}
 #| echo: true
@@ -341,6 +473,7 @@ usethis::use_package("ggplot2", type = "Depends")
 ## Bonne pratique
 
 Listez toujours les **packages requis dans le fichier DESCRIPTION**. Ainsi, vous centralisez la liste des packages requis en un seul endroit et vous pourrez utiliser les fonctions [`remotes::install_deps()`](https://remotes.r-lib.org/reference/install_deps.html) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all).
+
 :::
 
 ## Chargement du projet 
@@ -370,6 +503,15 @@ devtools::load_all()
 ## Bonne pratique
 
 Avec un fichier **DESCRIPTION** (listant les dépendances requises) et un dossier **R/**, vous pouvez utiliser les fonctions [`remotes::install_deps()`](https://remotes.r-lib.org/reference/install_deps.html) (installation/mise à jour des packages) et [`devtools::load_all()`](https://www.rdocumentation.org/packages/devtools/versions/2.4.5/topics/load_all) (chargement du projet) au lieu de [`install.packages()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/install.packages), [`library()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/library) et [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source).
+
+J'ai besoin d'un nouveau package pour mes analyses, j'utilise **toujours** la procédure suivante :
+
+- je renseigne le package dans DESCRIPTION
+
+- j'execute `devtools::install_deps()` pour l'installer
+
+- j'execute `devtools::load_all()` si j'utilise le champ "Depends" pour pouvoir utliser les fonctions du package (c'est mal), sinon j'utilise (toujours) `package::fonction`.
+
 :::
 
 
@@ -397,7 +539,7 @@ utils::file.edit("analyses/download-data.R")
 
 # Download project raw data
 #
-# This script will download bird species richness data and the global grid
+# This script will download bird and mammal species richness data and the global grid
 # from Williams et al. 2024. The files will be stored in `data/`.
 # 
 # All functions used in the script have been developed for this project
@@ -405,12 +547,15 @@ utils::file.edit("analyses/download-data.R")
 #
 # Jane Doe <jane.doe@mail.me>
 
-## Download bird sr data ----
+## Download SR data ----
 
-dl_bird_rs()
+### birds
+download_sr("bird")
+
+### mammals
+download_sr("mamm")
 
 ## Download the global grid ----
-
 dl_grid_cells()
 
 ```
@@ -443,6 +588,10 @@ Contenu du make.R :
 # francois.guilhaumon@ird.fr
 # make.R
 ############################################################
+
+# create directories ----
+reps <- c("data", "analyses", "R", "outputs", "references")
+lapply(reps, dir.create, showWarnings = FALSE)
 
 # install the project dependencies listed in DESCRIPTION ----
 devtools::install_deps()
@@ -513,20 +662,22 @@ utils::file.edit("README.md")
 
 # Basic Compendium
 
-This commpendium guides you (in French) in the creation of a basic research compendium. It takes as example the data associated with the study of Williams et al. (2024) :
+This commpendium takes as example the data associated with the study of Williams et al. (2024) to exemplify the structure of a basic research compendium:
   
 >  Williams, P.J., Zipkin, E.F. & Brodie, J.F. Deep biogeographic barriers explain divergent global vertebrate communities. Nat Commun 15, 2457 (2024). https://doi.org/10.1038/s41467-024-46757-z
 
 ## Usage
 
-The exercise is available [here](https://fguilhaumon.github.io/basic_compendium).
+The analyses can be run by executing the commands in [make.R](make.R).
 
+[ ... ]
 
 ```
 
+::: {.callout-important}
+N'oubliez pas aussi d'éditer les sections **_Title_** et **_Description_** du fichier **DESCRIPTION**.
 
-{{< fa warning >}}&nbsp; N'oubliez pas aussi d'éditer les sections **_Title_** et **_Description_** du fichier **DESCRIPTION**.
-
+:::
 
 ::: {.callout-tip}
 ## Bonne pratique
@@ -535,6 +686,8 @@ Ajoutez un **README** à votre projet afin d'aider l'utilisateur à comprendre v
 :::
 
 
+## Crédits
 
-**Félicitation ! Votre research compendium est maintenant fonctionnel.**
+L'exercice de la formation ["Recherche reproductible en écologie numérique"](https://rdatatoolbox.github.io/) du CESAB à été créé par [Nicolas Casajus](https://nicolascasajus.fr/). Les illustrations ont été créées par [Allison_horst](https://https://allisonhorst.com/).
+
 
