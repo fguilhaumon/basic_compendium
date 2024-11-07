@@ -7,4 +7,4 @@ This commpendium guides you (in French) in the creation of a basic research comp
 
 ## Usage
 
-The exercise is available [here](fguilhaumon.github.io/basic_compendium).
+The exercise is available [here](https://fguilhaumon.github.io/basic_compendium).
