@@ -1,0 +1,15 @@
+Package: basic_compendium
+Title: Tutorial for a Basic Research Compendium
+Version: 0.0.0.9000
+Authors@R: 
+    person("François", "Guilhaumon", "francois.guilhaumon@ird.fr", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-4707-8932"))
+Description: This commpendium guides you (in French) in the creation of a basic research compendium. It takes as example the data associated with the study of Williams et al. (2024)
+License: CC BY 4.0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports:
+  quarto,
+  magick,
+  pdftools

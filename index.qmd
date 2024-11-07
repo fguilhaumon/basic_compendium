@@ -38,6 +38,13 @@ nous allons utiliser les packages {{< fa brands r-project >}}
 `usethis` et `devtools`. Ils permettent de faciliter la création de certains fichiers/répertoires
 spécifiques à un compendium/package {{< fa brands r-project >}} et d'utiliser à notre avantage les outils de développement de packages {{< fa brands r-project >}}.
 
+::: {layout-ncol=2}
+
+![](images/usethis.png){width="30%"}
+![](images/devtools.svg){width="30%"}
+
+:::
+
 {{< fa hand-point-right >}} Installez les packages {{< fa brands r-project >}} `usethis` et `devtools` depuis le CRAN :
 
 ```{r}
@@ -87,11 +94,9 @@ Comme ces packages ne sont PAS nécessaires à l'execution de nos analyses (ils 
 
 Toujours travailler dans un **Projet RStudio**. Cela présente l'avantage de simplifier les chemins d'accès aux fichiers, notamment avec le package {{< fa brands r-project >}} [`here`](https://here.r-lib.org/) et sa fonction [`here()`](https://here.r-lib.org/reference/here.html) dans les documents quarto. Les chemins d'accès seront toujours construits par rapport au dossier contenant le fichier **.Rproj** (racine du projet). On parle de _chemin relatif_. N'utilisez **plus jamais** la fonction [`setwd()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/getwd).
 
-![](images/setwd_VS_rproj.png){width="50%" fig-align="center"}
-
 :::
 
-
+![](images/setwd_VS_rproj.png){width="50%" fig-align="center"}
 
 ## Fichier DESCRIPTION
 
@@ -163,6 +168,13 @@ Toujours ajouter une **LICENSE** à un projet qui sera rendu public. Visitez le 
 d'autres termes, personne ne peut rien faire avec votre projet (pas d'utilisation, pas de modification, pas de partage, etc.).
 :::
 
+:::{.callout-note}
+
+Vous pouvez utiliser le site [**creativecommons.org**](https://chooser-beta.creativecommons.org/) pour obtenir le code source d'un badge reflétant la licence associée à votre compendium :
+
+<p xmlns:cc="http://creativecommons.org/ns#" >This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""></a></p>
+
+:::
 
 ## Ajout des répertoires
 
@@ -204,6 +216,10 @@ Un bon _**Research compendium**_ sera composé de différents sous-répertoires,
 ## Données du compendium
 
 Nous voilà fin prêt à travailler !
+
+
+![](outputs/williams_natcom_2024.png){fig-align="center"}
+
 
 Nous utiliserons les données associées à l'étude de @williams_deep_2024 dont voici le résumé :
 
