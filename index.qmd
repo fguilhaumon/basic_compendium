@@ -141,7 +141,7 @@ Toujours ajouter un fichier **DESCRIPTION** à la racine du projet. Il permet de
 
 ## Choix d'une Licence
 
-Tout matériel partagé doit disposé d'une licence qui décrit ce qu'il est
+Tout matériel partagé doit disposer d'une licence qui décrit ce qu'il est
 possible de faire avec. Ainsi, nous vous recommandons d'ajouter **dès le début du projet** une licence. Pour trouver une licence appropriée à votre projet, rendez-vous, par exemple, sur cette page : <https://chooser-beta.creativecommons.org/>.
 
 Ajoutons la licence [CC-by](https://usethis.r-lib.org/reference/licenses.html) à notre projet avec la fonction `usethis::use_ccby_license()`.
