@@ -217,7 +217,7 @@ Un [_**bon Research compendium**_](https://www.youtube.com/watch?v=QuGcoOJKXT8) 
 Nous voilà fin prêt à travailler !
 
 
-![](outputs/williams_natcom_2024.png){fig-align="center"}
+![un screenshot du pdf réalisé avec le package `magick`, voir le code source dans R/pdf_convert.R ](outputs/williams_natcom_2024.png){fig-align="center"}
 
 
 Nous utiliserons les données associées à l'étude de @williams_deep_2024 dont voici le résumé :
@@ -446,6 +446,50 @@ rm(download_sr)
 :::
 
 {{< fa hand-point-right >}} Écrivez une fonction `dl_grid_cells` qui télécharge les fichiers "shapefile" de la grille globale.
+
+```{r}
+#| echo: true
+#| eval: false
+
+
+dl_grid_cells <- function() {
+  
+  ## Inform about the data being downloaded
+  message("# ---- Downloading the global grid")
+  
+  ## File names ----
+  base_name <- "global_cells"
+  extensions <- c(".shp", ".shx", ".prj", ".dbf")
+  filenames <- paste0(base_name, extensions)
+  
+  ## GitHub directory URL ----
+  url <- "https://raw.githubusercontent.com/pwilliams0/Biogeography_and_global_diversity/refs/heads/main/Data/"
+
+  ## Complete file url ----
+  file_urls <- paste0(url, filenames)
+  
+  ## Destination ---- 
+  dest_dir  <- "data"
+  dest_paths <- file.path(dest_dir, filenames)
+  
+  ## Download files ----
+  lapply(1:length(file_urls), function(i) {
+    message("-> ", base_name, extensions[i])
+    utils::download.file(url      = file_urls[i],
+                         destfile = dest_paths[i],
+                         mode     = "wb")
+  })
+  
+  return(dest_paths)
+  
+  
+}
+
+```
+
+Documentez la fonction svp.
+
+
 
 ## Documentation 
 
@@ -677,6 +721,10 @@ Utilisez la fonction [`source()`](https://www.rdocumentation.org/packages/base/v
 # make.R
 ############################################################
 
+# create directories ----
+reps <- c("data", "analyses", "R", "outputs", "references")
+lapply(reps, dir.create, showWarnings = FALSE)
+
 # install the project dependencies listed in DESCRIPTION ----
 devtools::install_deps()
 
@@ -739,6 +787,55 @@ N'oubliez pas aussi d'éditer les sections **_Title_** et **_Description_** du f
 Ajoutez un **README** à votre projet afin d'aider l'utilisateur à comprendre votre projet. 
 :::
 
+## Encore des fonctions !
+
+Maintenant que nous avons impélmenté l'étape de téléchargement des données brutes. Nous pouvons les préparer en vue de futures analyses (étape de préparation des données). Nous disposons de deux fichiers csv qui nous renseignent sur la richesse spécifique dans chaque cellule de la grille globale, pour laquelle nous avons un shapefile. Pour importer et manipuler des données spatiales sous {{< fa brands r-project >}}, le package [`sf`](https://r-spatial.github.io/sf/) est très pertinent.
+
+Créons une fonction qui
+
+- importe le shapefile de la grille globale (fonction [`sf::st_read`](https://r-spatial.github.io/sf/reference/st_read.html)),
+
+- les données contenues dans les deux fichiers csv,
+
+- augmente la table d'attributs de la grille avec les données de richesse (fonction `dplyr::left_join`)
+
+dans le fichier `R/functions.R`.
+
+```{r}
+
+gather_raw_data <- function() {
+  
+  ## import the global grid ----
+  grid <- sf::st_read("data/global_cells.shp") #head(grid)
+  
+  ## import richness data ----
+  mamm_sr <- read.csv("data/mamm_SR_cells.csv", row.names = 1)
+  names(mamm_sr)[names(mamm_sr) == "SR"] <- "mamm_sr"
+  bird_sr <- read.csv("data/bird_SR_cells.csv", row.names = 1)
+  names(bird_sr)[names(bird_sr) == "SR"] <- "bird_sr"
+  
+  ## add richness data to the grid
+  grid <- dplyr::left_join(grid, mamm_sr, by = "cell_id")
+  grid <- dplyr::left_join(grid, bird_sr, by = "cell_id")
+  
+  ## il y a une majuscule a Realm !!
+  names(grid) <- tolower(names(grid))
+  
+  ## show the data ?
+  # plot(grid["mamm_sr"], border = NA)
+  # plot(grid["bird_sr"], border = NA)
+
+  
+  grid
+  
+}
+
+
+```
+
+Documentez la fonction svp.
+
+[...]
 
 ## Crédits
 
