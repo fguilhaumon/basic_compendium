@@ -624,7 +624,7 @@ Créez un nouveau script {{< fa brands r-project >}} comme suit et éditez-le:
 #| eval: false
 
 ## Ajout d'un script R ----
-utils::file.edit("analyses/download-data.R")
+utils::file.edit("analyses/01_download-data.R")
 ```
 
 
@@ -707,7 +707,7 @@ Un **fichier make.R** placé à la racine du projet permet de facilement mettre 
 
 :::
 
-{{< fa hand-point-right >}} Finalement, ajoutez une ligne dans le fichier **make.R** qui permettra d'exécuter le script {{< fa brands r-project >}} `analyses/download-data.R`.
+{{< fa hand-point-right >}} Finalement, ajoutez une ligne dans le fichier **make.R** qui permettra d'exécuter le script {{< fa brands r-project >}} `analyses/01_download-data.R`.
 Utilisez la fonction [`source()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/source) pour cela.
 
 
@@ -732,11 +732,19 @@ devtools::install_deps()
 devtools::load_all()
 
 # download the project data ----
-source("analyses/download-data.R")
+source("analyses/01_download-data.R")
 
 ```
 
 Pour charger le projet et lancer les analyses, il suffit d'exécuter ce fichier **make.R**.
+
+```{mermaid}
+
+flowchart LR
+  A[make.R] --> B[analyses/01_download-data.R]
+
+```
+
 
 
 ::: {.callout-tip}
@@ -833,9 +841,16 @@ gather_raw_data <- function() {
 
 ```
 
-Documentez la fonction svp.
+Documentez la fonction svp. Et mettez à jour le flux d'analyses, cette fois-ci en écrivant directement l'appel à la fonction `basic_compendium::gather_raw_data()` dans le make.R ... Comme cette étape d'assemblage des données ne contient qu'un seul appel à une fonction, on ne va pas créer un scripts dans `analyses` rien que pour cela ...
 
-[...]
+```{mermaid}
+
+flowchart LR
+  A[make.R] --> B[analyses/01_download-data.R]
+  A --> C[gather_raw_data]
+
+```
+
 
 ## Crédits
 
