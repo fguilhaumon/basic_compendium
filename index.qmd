@@ -487,9 +487,6 @@ dl_grid_cells <- function() {
 
 ```
 
-Documentez la fonction svp.
-
-
 
 ## Documentation 
 
@@ -797,7 +794,7 @@ Ajoutez un **README** à votre projet afin d'aider l'utilisateur à comprendre v
 
 ## Encore des fonctions !
 
-Maintenant que nous avons impélmenté l'étape de téléchargement des données brutes. Nous pouvons les préparer en vue de futures analyses (étape de préparation des données). Nous disposons de deux fichiers csv qui nous renseignent sur la richesse spécifique dans chaque cellule de la grille globale, pour laquelle nous avons un shapefile. Pour importer et manipuler des données spatiales sous {{< fa brands r-project >}}, le package [`sf`](https://r-spatial.github.io/sf/) est très pertinent.
+Maintenant que nous avons implémenté l'étape de téléchargement des données brutes. Nous pouvons les préparer en vue de futures analyses (étape de préparation des données). Nous disposons de deux fichiers csv qui nous renseignent sur la richesse spécifique dans chaque cellule de la grille globale, pour laquelle nous avons un shapefile. Pour importer et manipuler des données spatiales sous {{< fa brands r-project >}}, le package [`sf`](https://r-spatial.github.io/sf/) est très pertinent.
 
 Créons une fonction qui
 
