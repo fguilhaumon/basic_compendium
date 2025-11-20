@@ -1,7 +1,7 @@
 ---
 title: "Research Compendium"
-subtitle: "Master 2 BEST-ALI 2024-2025"
-title-block-banner: images/workflow.png
+subtitle: "Master 2 BEST-ALI 2025-2026"
+#title-block-banner: images/workflow.png
 format:
   html:
     theme: spacelab
@@ -383,6 +383,13 @@ Plutôt que de créer une deuxième fonction pour les mammifères nous allons mo
 #| echo: true
 #| eval: false
 
+#' Download Species Richness Data from Williams et al. 2024
+#'
+#' @param taxon (bird, mamm) the taxon for which data are downloaded
+#' 
+#' @return the path to the downloaded file
+#' @export
+#'
 download_sr <- function(taxon) {
   
   ## Inform about the data being downloaded
@@ -452,6 +459,11 @@ rm(download_sr)
 #| eval: false
 
 
+#' Title
+#'
+#' @return
+#' @export
+#'
 dl_grid_cells <- function() {
   
   ## Inform about the data being downloaded
@@ -852,5 +864,7 @@ flowchart LR
 ## Crédits
 
 L'exercice de la formation ["Recherche reproductible en écologie numérique"](https://rdatatoolbox.github.io/) du CESAB à été créé par [Nicolas Casajus](https://nicolascasajus.fr/). Les illustrations ont été créées par [Allison_horst](https://https://allisonhorst.com/).
+
+Vous trouverez le dépôt github correspondant à ce tutoriel ici : [https://github.com/fguilhaumon/basic_compendium](https://github.com/fguilhaumon/basic_compendium)
 
 
