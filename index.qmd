@@ -759,7 +759,7 @@ flowchart LR
 ::: {.callout-tip}
 ## Bonne pratique
 
-Le dossier **analyses/** contient les scripts {{< fa brands r-project >}} qui appellent les fonctions {{< fa brands r-project >}} stockées dans le dossier **R/**. Il peut être ignoré dans le cas de simples analyses. Le code de l'analyse devra alors se trouver dans le **make.R**. A contrario, dans le cas d'analyses complexes, n'hésitez pas à multiplier les scripts {{< fa brands r-project >}} (plutôt que d'avoir un seul gros script).
+Le dossier **analyses/** contient les scripts {{< fa brands r-project >}} qui appellent les fonctions {{< fa brands r-project >}} stockées dans le dossier **R/**. Il peut être ignoré dans le cas d' analyses simples et courtes. Le code de l'analyse devra alors se trouver dans le **make.R**. A contrario, dans le cas d'analyses complexes, n'hésitez pas à multiplier les scripts {{< fa brands r-project >}} (plutôt que d'avoir un seul gros script).
 :::
 
 ## Ajout d'un README 
@@ -850,7 +850,7 @@ gather_raw_data <- function() {
 
 ```
 
-Documentez la fonction svp. Et mettez à jour le flux d'analyses, cette fois-ci en écrivant directement l'appel à la fonction `basic_compendium::gather_raw_data()` dans le make.R ... Comme cette étape d'assemblage des données ne contient qu'un seul appel à une fonction, on ne va pas créer un scripts dans `analyses` rien que pour cela ...
+Documentez la fonction svp. Et mettez à jour le flux d'analyses, cette fois-ci en écrivant directement l'appel à la fonction `gather_raw_data()` dans le make.R ... Comme cette étape d'assemblage des données ne contient qu'un seul appel à une fonction, on ne va pas créer un scripts dans `analyses` rien que pour cela ...
 
 ```{mermaid}
 
